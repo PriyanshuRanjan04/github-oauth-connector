@@ -1,0 +1,21 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# requirements.txt
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Web framework
+fastapi==0.115.12
+
+# ASGI server
+uvicorn[standard]==0.34.0
+
+# Async HTTP client (GitHub API calls)
+httpx==0.28.1
+
+# Async MongoDB driver
+motor==3.7.0
+
+# Pydantic v2 settings (.env loading)
+pydantic-settings==2.8.1
+
+# .env file support
+python-dotenv==1.1.0
