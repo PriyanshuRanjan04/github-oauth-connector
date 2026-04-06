@@ -238,9 +238,11 @@ app.include_router(github.router)
 # Root & Health Endpoints
 # ══════════════════════════════════════════════════════════════════════════════
 
-@app.get("/", tags=["Health"], summary="Root — API Info")
+@app.api_route("/", methods=["GET", "HEAD"], tags=["Health"], summary="Root — API Info")
 async def root():
-    """Welcome endpoint. Returns basic API info and links to docs."""
+    """Welcome endpoint. Returns basic API info and links to docs.
+    HEAD method supported for Render's liveness health check probe.
+    """
     return {
         "app": settings.APP_NAME,
         "version": settings.APP_VERSION,
