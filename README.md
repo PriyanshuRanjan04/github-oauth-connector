@@ -1,4 +1,4 @@
-# GitHub OAuth Connector
+# 🔐 GitHub OAuth Connector
 
 > A backend service that connects with GitHub using **OAuth 2.0**, allowing users to authenticate and perform real GitHub API actions through clean REST endpoints.
 
@@ -6,20 +6,20 @@ Built with **Python + FastAPI + MongoDB**, deployable on **Render**.
 
 ---
 
-## Table of Contents
+## 📋 Table of Contents
 
-- [Tech Stack](#tech-stack)
-- [Project Structure](#project-structure)
-- [OAuth 2.0 Flow](#oauth-20-flow)
-- [Local Setup](#local-setup)
-- [API Endpoints](#api-endpoints)
-- [Session Token Usage](#session-token-usage)
-- [Error Handling](#error-handling)
-- [Render Deployment](#render-deployment)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🧱 Project Structure](#-project-structure)
+- [🔄 OAuth 2.0 Flow](#-oauth-20-flow)
+- [🚀 Local Setup](#-local-setup)
+- [📋 API Endpoints](#-api-endpoints)
+- [🔐 Session Token Usage](#-session-token-usage)
+- [⚠️ Error Handling](#️-error-handling)
+- [☁️ Render Deployment](#️-render-deployment)
 
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Layer | Technology |
 |---|---|
@@ -34,7 +34,7 @@ Built with **Python + FastAPI + MongoDB**, deployable on **Render**.
 
 ---
 
-## Project Structure
+## 🧱 Project Structure
 
 ```
 github-oauth-connector/
@@ -61,7 +61,7 @@ github-oauth-connector/
 
 ---
 
-## OAuth 2.0 Flow
+## 🔄 OAuth 2.0 Flow
 
 ```
 User                    Your API                  GitHub
@@ -91,19 +91,19 @@ User                    Your API                  GitHub
  │      username }          │                        │
 ```
 
-The returned `session_token` is a UUID that the client sends as the `X-Session-Token` header on all subsequent `/github/*` calls. It maps to the stored GitHub access token in MongoDB.
+💡 The returned `session_token` is a UUID that the client sends as the `X-Session-Token` header on all subsequent `/github/*` calls. It maps to the stored GitHub access token in MongoDB.
 
 ---
 
-## Local Setup
+## 🚀 Local Setup
 
-### Prerequisites
+### ✅ Prerequisites
 
-- Python 3.11+
-- MongoDB (local or [Atlas](https://cloud.mongodb.com))
-- A GitHub account
+- 🐍 Python 3.11+
+- 🗄️ MongoDB (local or [Atlas](https://cloud.mongodb.com))
+- 🐙 A GitHub account
 
-### 1. Create a GitHub OAuth App
+### 🔐 1. Create a GitHub OAuth App
 
 1. Go to **GitHub → Settings → Developer Settings → OAuth Apps → New OAuth App**
 2. Fill in:
@@ -112,7 +112,7 @@ The returned `session_token` is a UUID that the client sends as the `X-Session-T
    - **Authorization callback URL**: `http://localhost:8000/auth/callback`
 3. Copy the **Client ID** and generate a **Client Secret**
 
-### 2. Clone & Install
+### 📦 2. Clone & Install
 
 ```bash
 git clone https://github.com/your-username/github-oauth-connector.git
@@ -125,7 +125,7 @@ venv\Scripts\activate        # Windows
 pip install -r requirements.txt
 ```
 
-### 3. Configure Environment
+### 🌿 3. Configure Environment
 
 ```bash
 cp .env.example .env
@@ -140,13 +140,13 @@ CALLBACK_URL=http://localhost:8000/auth/callback
 MONGO_URI=mongodb://localhost:27017
 ```
 
-### 4. Run the Server
+### 🚀 4. Run the Server
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-### 5. Open Swagger UI
+### 🧪 5. Open Swagger UI
 
 ```
 http://localhost:8000/docs
@@ -154,9 +154,9 @@ http://localhost:8000/docs
 
 ---
 
-## API Endpoints
+## 📋 API Endpoints
 
-### Authentication
+### 🔐 Authentication
 
 #### `GET /auth/login`
 Redirects the browser to GitHub's OAuth authorization page.
@@ -185,16 +185,16 @@ GitHub redirects here after user approval. Exchanges the code for a token, store
 
 ---
 
-### GitHub API
+### 🐙 GitHub API
 
-> All `/github/*` endpoints require the header:
+> 🔐 All `/github/*` endpoints require the header:
 > ```
 > X-Session-Token: <your_session_token>
 > ```
 
 ---
 
-#### `GET /github/repos`
+#### 📂 `GET /github/repos`
 Fetches all repositories owned by the authenticated user.
 
 **Request:**
@@ -228,7 +228,7 @@ X-Session-Token: 3f8a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c
 
 ---
 
-#### `GET /github/issues?owner=&repo=`
+#### 📂 `GET /github/issues?owner=&repo=`
 Lists open issues for a specific repository.
 
 **Request:**
@@ -261,7 +261,7 @@ X-Session-Token: 3f8a1b2c-4d5e-6f7a-8b9c-0d1e2f3a4b5c
 
 ---
 
-#### `POST /github/issues`
+#### 📝 `POST /github/issues`
 Creates a new issue in a specified repository.
 
 **Request:**
@@ -296,7 +296,7 @@ Content-Type: application/json
 
 ---
 
-#### `GET /health`
+#### ✅ `GET /health`
 Liveness check used by Render.
 
 ```json
@@ -309,15 +309,15 @@ Liveness check used by Render.
 
 ---
 
-## Session Token Usage
+## 🔐 Session Token Usage
 
 After a successful `/auth/callback`, you receive a `session_token` UUID. This token:
 
-- Is stored in MongoDB linked to your GitHub access token
-- Must be sent as the `X-Session-Token` header on every `/github/*` request
-- Is refreshed on every re-authentication (new UUID generated each time)
+- 🗄️ Is stored in MongoDB linked to your GitHub access token
+- 📤 Must be sent as the `X-Session-Token` header on every `/github/*` request
+- 🔄 Is refreshed on every re-authentication (new UUID generated each time)
 
-**In Swagger UI:**
+**🧪 In Swagger UI:**
 1. Complete the OAuth flow via `/auth/login`
 2. Copy the `session_token` from the `/auth/callback` response
 3. Click **Authorize** in Swagger (lock icon) and paste: `your-session-token`
@@ -325,7 +325,7 @@ After a successful `/auth/callback`, you receive a `session_token` UUID. This to
 
 ---
 
-## Error Handling
+## ⚠️ Error Handling
 
 All errors return a consistent JSON envelope:
 
@@ -340,20 +340,20 @@ All errors return a consistent JSON envelope:
 
 | Status | Cause |
 |---|---|
-| `400` | Invalid CSRF state in OAuth callback |
-| `401` | Missing, invalid, or expired session token |
-| `403` | GitHub primary rate limit exceeded or insufficient OAuth scope |
-| `404` | Repository or endpoint not found |
-| `422` | Request validation failed (missing/wrong fields) |
-| `429` | GitHub secondary rate limit — includes `Retry-After` seconds |
-| `500` | Unexpected internal server error |
-| `502` | GitHub API unreachable or unexpected response |
+| `400` | 🔐 Invalid CSRF state in OAuth callback |
+| `401` | 🔐 Missing, invalid, or expired session token |
+| `403` | ⛔ GitHub primary rate limit exceeded or insufficient OAuth scope |
+| `404` | 🔍 Repository or endpoint not found |
+| `422` | 📋 Request validation failed (missing/wrong fields) |
+| `429` | ⏱️ GitHub secondary rate limit — includes `Retry-After` seconds |
+| `500` | 💥 Unexpected internal server error |
+| `502` | 🌐 GitHub API unreachable or unexpected response |
 
 ---
 
-## Render Deployment
+## ☁️ Render Deployment
 
-### 1. Push to GitHub
+### 🚀 1. Push to GitHub
 
 ```bash
 git init
@@ -363,7 +363,7 @@ git remote add origin https://github.com/your-username/github-oauth-connector.gi
 git push -u origin main
 ```
 
-### 2. Create a Web Service on Render
+### ☁️ 2. Create a Web Service on Render
 
 1. Go to [render.com](https://render.com) → **New → Web Service**
 2. Connect your GitHub repository
@@ -372,18 +372,18 @@ git push -u origin main
    - **Start Command:** `uvicorn app.main:app --host 0.0.0.0 --port 10000`
    - **Environment:** Python 3
 
-### 3. Add Environment Variables
+### 🌿 3. Add Environment Variables
 
 In Render → **Environment** tab, add:
 
 | Key | Value |
 |---|---|
-| `GITHUB_CLIENT_ID` | Your GitHub OAuth App client ID |
-| `GITHUB_CLIENT_SECRET` | Your GitHub OAuth App client secret |
-| `MONGO_URI` | Your MongoDB Atlas connection string |
-| `CALLBACK_URL` | `https://your-app-name.onrender.com/auth/callback` |
+| `GITHUB_CLIENT_ID` | 🔐 Your GitHub OAuth App client ID |
+| `GITHUB_CLIENT_SECRET` | 🔐 Your GitHub OAuth App client secret |
+| `MONGO_URI` | 🗄️ Your MongoDB Atlas connection string |
+| `CALLBACK_URL` | ☁️ `https://your-app-name.onrender.com/auth/callback` |
 
-### 4. Update GitHub OAuth App Callback URL
+### 🔐 4. Update GitHub OAuth App Callback URL
 
 1. Go to **GitHub → Settings → Developer Settings → OAuth Apps**
 2. Select your app
@@ -392,7 +392,7 @@ In Render → **Environment** tab, add:
    https://your-app-name.onrender.com/auth/callback
    ```
 
-### 5. Deploy & Test
+### 🧪 5. Deploy & Test
 
 Once deployed, open:
 ```
@@ -403,6 +403,6 @@ Follow the same flow: `/auth/login` → copy `session_token` → test GitHub end
 
 ---
 
-## License
+## 📝 License
 
 MIT
